@@ -1,5 +1,29 @@
 const $newGameScreenPickPlayerIcons = document.querySelectorAll(".new-game-screen-pick-player-icon")
+const $startGameButtons = document.querySelectorAll('.new-game-screen-new-game-buttons__button')
+const $startingScreen = document.querySelector('.new-game-screen')
+const $gameScreen = document.querySelector('.game-screen')
+const $gameCells = document.querySelectorAll('.game-screen-grid__cell')
+const $playerIndicator = document.querySelector('.game-screen-header-turn-indicator svg')
+const $resetButton = document.querySelector('.game-screen-header-restart-btn')
+
+const player1 = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.9704 15.8706C31.9704 7.10551 24.8649 0 16.0998 0C7.33476 0 0.229248 7.10551 0.229248 15.8706C0.229248 24.6357 7.33476 31.7412 16.0998 31.7412C24.8649 31.7412 31.9704 24.6357 31.9704 15.8706ZM9.63405 15.8706C9.63405 12.2996 12.5289 9.4048 16.0998 9.4048C19.6708 9.4048 22.5656 12.2996 22.5656 15.8706C22.5656 19.4416 19.6708 22.3364 16.0998 22.3364C12.5289 22.3364 9.63405 19.4416 9.63405 15.8706Z" fill="#F2B137"/>
+</svg>
+`
+
+const player2 = `<svg width="32" height="32" viewBox="0 0 32 32" fill="blue" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27.681 1.63437C26.5094 0.462798 24.6099 0.4628 23.4383 1.63437L16 9.07271L8.56166 1.63437C7.39009 0.462798 5.49059 0.4628 4.31902 1.63437L1.63437 4.31902C0.462799 5.49059 0.462801 7.39009 1.63437 8.56166L9.07271 16L1.63437 23.4383C0.462798 24.6099 0.4628 26.5094 1.63437 27.681L4.31902 30.3656C5.49059 31.5372 7.39009 31.5372 8.56166 30.3656L16 22.9273L23.4383 30.3656C24.6099 31.5372 26.5094 31.5372 27.681 30.3656L30.3656 27.681C31.5372 26.5094 31.5372 24.6099 30.3656 23.4383L22.9273 16L30.3656 8.56166C31.5372 7.39009 31.5372 5.49059 30.3656 4.31902L27.681 1.63437Z" />
+</svg>
+`
+
+
 let currentPlayer = "o"
+let round = 0
+let player1Score = 0
+let player2Score = 0
+
+$resetButton.addEventListener('click', () => resetGame())
+
 $newGameScreenPickPlayerIcons.forEach(function($newGameScreenPickPlayerIcon) {
     $newGameScreenPickPlayerIcon.addEventListener("click", function() {
     for (let i = 0; i < $newGameScreenPickPlayerIcons.length; i++) {
@@ -8,5 +32,64 @@ $newGameScreenPickPlayerIcons.forEach(function($newGameScreenPickPlayerIcon) {
         $newGameScreenPickPlayerIcon.classList.add("new-game-screen-pick-player-icon--selected")
         currentPlayer = $newGameScreenPickPlayerIcon.getAttribute("data-player")
         console.log(currentPlayer)
+        
+    })
+})
+
+function gameStart(){
+    $gameCells.forEach(function($gameCell){
+        $gameCell.innerHTML = ""
+    })
+}
+
+$gameCells.forEach(function($gameCell){
+    $gameCell.addEventListener('click', function(){
+       if ($gameCell.innerHTML === ""){
+            if(currentPlayer === "o"){
+                $gameCell.innerHTML = player1
+                player1Score += parseInt($gameCell.getAttribute('data-value'))
+                console.log('new score ' + player1Score)
+                if(isWin(player1Score)){
+                    alert('le joueur 1 a gagné')
+                    window.location.href = "https://steamuserimages-a.akamaihd.net/ugc/2053129740384007681/008613159A03A2D9A1A38C0F66FC3F3CBCF73C9C/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+                }
+            }else{
+                $gameCell.innerHTML = player2
+                player2Score +=  parseInt($gameCell.getAttribute('data-value'))
+                if(isWin(player2Score)){
+                    alert('le joueur 2 a gagné')
+                }
+            }
+       }else(alert("non non non, c'est pas vide : )"))
+
+        countRound()
+    })
+})
+
+function isWin(score) {
+    if(score === 15){
+     return true
+    }
+}
+
+function resetGame(){
+    currentPlayer = "o"
+    player1Score = 0
+    player2Score = 0
+    gameStart()
+}
+
+function countRound(){
+    round++
+    currentPlayer === "o" ? currentPlayer = "x" : currentPlayer = "o"
+    console.log('round ' + round)
+    console.log('player ' + currentPlayer)  
+}
+
+$startGameButtons.forEach(function($startGameButton){
+    $startGameButton.addEventListener('click', function(e ){
+        $startingScreen.style.display = "none"
+        $gameScreen.style.display = "initial"
+        gameStart()
     })
 })

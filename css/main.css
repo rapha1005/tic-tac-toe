@@ -20,6 +20,8 @@
     --font-size-body: 14px; 
 }
 
+
+
 body {
     background-color: var(--mirage);
     display: flex;
