@@ -21,57 +21,61 @@ const player2 = `<svg width="32" height="32" viewBox="0 0 32 32" fill="#40e0d0" 
 const turnIndicatorText = `<span class="game-screen-header-turn-indicator__title">turn</span>`
 let currentPlayer = "x"
 let round = 0
-let player1Score = []  
-let player2Score = []  
+let player1Score = []
+let player2Score = []
 
 $resetButton.addEventListener('click', () => gameStart())
 
-$newGameScreenPickPlayerIcons.forEach(function($newGameScreenPickPlayerIcon) {
-    $newGameScreenPickPlayerIcon.addEventListener("click", function() {
-    for (let i = 0; i < $newGameScreenPickPlayerIcons.length; i++) {
-        $newGameScreenPickPlayerIcons[i].classList.remove("new-game-screen-pick-player-icon--selected")
-    }
+$newGameScreenPickPlayerIcons.forEach(function ($newGameScreenPickPlayerIcon) {
+    $newGameScreenPickPlayerIcon.addEventListener("click", function () {
+        for (let i = 0; i < $newGameScreenPickPlayerIcons.length; i++) {
+            $newGameScreenPickPlayerIcons[i].classList.remove("new-game-screen-pick-player-icon--selected")
+        }
         $newGameScreenPickPlayerIcon.classList.add("new-game-screen-pick-player-icon--selected")
-        
+
     })
 })
 
-function gameStart(){
+function gameStart() {
     player1Score = []
     player2Score = []
     currentPlayer = "x"
     $turnIndicator.innerHTML = player2 + turnIndicatorText
-    $gameCells.forEach(function($gameCell){
+    $gameCells.forEach(function ($gameCell) {
         $gameCell.innerHTML = ""
     })
 }
 
-$gameCells.forEach(function($gameCell){
-    $gameCell.addEventListener('click', function(){
-       if ($gameCell.innerHTML === ""){
-            if(currentPlayer === "o"){
+$gameCells.forEach(function ($gameCell) {
+    $gameCell.addEventListener('click', function () {
+        if ($gameCell.innerHTML === "") {
+            if (currentPlayer === "o") {
                 $gameCell.innerHTML = player1
                 player1Score.push(parseInt($gameCell.getAttribute('data-value')))
                 console.log('new score ' + player1Score)
-                if(isWin(player1Score)){
-                    alert('le joueur 1 a gagné')
-                    gameStart()
-                    
-                }else{
+                if (isWin(player1Score)) {
+                    setTimeout(() => {
+                        alert('les o ont gagné')
+                        window.confirm('nouvelles partie ?') ? gameStart() : window.location.reload()
+                    }, 500);
+                   
+                } else {
                     countRound()
                 }
-            }else{
+            } else {
                 $gameCell.innerHTML = player2
                 player2Score.push(parseInt($gameCell.getAttribute('data-value')))
-                if(isWin(player2Score)){
-                    alert('le joueur 2 a gagné')
-                    gameStart()
+                if (isWin(player2Score)) {
+                    setTimeout(() => {
+                        alert('les x ont gagné')
+                        window.confirm('nouvelles partie ?') ? gameStart() : window.location.reload()
+                    }, 500);
                     
-                }else{
+                } else {
                     countRound()
                 }
             }
-       }else(alert("non non non, c'est pas vide : )"))
+        } else (alert("non non non, c'est pas vide : )"))
     })
 })
 
@@ -81,7 +85,7 @@ function isWin(playerScore) {
             for (let k = j + 1; k < playerScore.length; k++) {
                 console.log(`Testing combination: ${playerScore[i]} + ${playerScore[j]} + ${playerScore[k]} = ${playerScore[i] + playerScore[j] + playerScore[k]}`);
                 if (playerScore[i] + playerScore[j] + playerScore[k] === 15) {
-                    return true;  
+                    return true
                 }
             }
         }
@@ -90,20 +94,20 @@ function isWin(playerScore) {
 
 
 
-function countRound(){
+function countRound() {
     round++
     currentPlayer === "o" ? currentPlayer = "x" : currentPlayer = "o"
     console.log('round ' + round)
     console.log('player ' + currentPlayer)
-    if(currentPlayer === "o"){
+    if (currentPlayer === "o") {
         $turnIndicator.innerHTML = player1 + turnIndicatorText
-    }else{
+    } else {
         $turnIndicator.innerHTML = player2 + turnIndicatorText
     }
 }
 
-    $startGameVsPlayerButtons.addEventListener('click', function(e ){
-        $startingScreen.style.display = "none"
-        $gameScreen.style.display = "initial"
-        gameStart()
-    })
+$startGameVsPlayerButtons.addEventListener('click', function (e) {
+    $startingScreen.style.display = "none"
+    $gameScreen.style.display = "initial"
+    gameStart()
+})
