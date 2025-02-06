@@ -111,6 +111,7 @@ body {
 }
 
 .new-game-screen-new-game-buttons {
+    cursor: pointer;
     list-style-type: none;
     padding-left: 0;
 }
