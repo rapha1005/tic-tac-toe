@@ -1,3 +1,5 @@
+
+
 const $newGameScreenPickPlayerIcons = document.querySelectorAll(".new-game-screen-pick-player-icon")
 const $startGameVsPlayerButtons = document.querySelector('.new-game-screen-new-game-buttons__button--secondary')
 const $startingScreen = document.querySelector('.new-game-screen')
@@ -19,8 +21,8 @@ const player2 = `<svg width="32" height="32" viewBox="0 0 32 32" fill="#40e0d0" 
 const turnIndicatorText = `<span class="game-screen-header-turn-indicator__title">turn</span>`
 let currentPlayer = "x"
 let round = 0
-let player1Score = 0
-let player2Score = 0
+let player1Score = []  
+let player2Score = []  
 
 $resetButton.addEventListener('click', () => gameStart())
 
@@ -35,8 +37,8 @@ $newGameScreenPickPlayerIcons.forEach(function($newGameScreenPickPlayerIcon) {
 })
 
 function gameStart(){
-    player1Score = 0
-    player2Score = 0
+    player1Score = []
+    player2Score = []
     currentPlayer = "x"
     $turnIndicator.innerHTML = player2 + turnIndicatorText
     $gameCells.forEach(function($gameCell){
@@ -49,7 +51,7 @@ $gameCells.forEach(function($gameCell){
        if ($gameCell.innerHTML === ""){
             if(currentPlayer === "o"){
                 $gameCell.innerHTML = player1
-                player1Score += parseInt($gameCell.getAttribute('data-value'))
+                player1Score.push(parseInt($gameCell.getAttribute('data-value')))
                 console.log('new score ' + player1Score)
                 if(isWin(player1Score)){
                     alert('le joueur 1 a gagné')
@@ -60,7 +62,7 @@ $gameCells.forEach(function($gameCell){
                 }
             }else{
                 $gameCell.innerHTML = player2
-                player2Score +=  parseInt($gameCell.getAttribute('data-value'))
+                player2Score.push(parseInt($gameCell.getAttribute('data-value')))
                 if(isWin(player2Score)){
                     alert('le joueur 2 a gagné')
                     gameStart()
@@ -75,11 +77,19 @@ $gameCells.forEach(function($gameCell){
     })
 })
 
-function isWin(score) {
-    if(score === 15){
-     return true
+function isWin(playerScore) {
+    for (let i = 0; i < playerScore.length; i++) {
+        for (let j = i + 1; j < playerScore.length; j++) {
+            for (let k = j + 1; k < playerScore.length; k++) {
+                console.log(`Testing combination: ${playerScore[i]} + ${playerScore[j]} + ${playerScore[k]} = ${playerScore[i] + playerScore[j] + playerScore[k]}`);
+                if (playerScore[i] + playerScore[j] + playerScore[k] === 15) {
+                    return true;  
+                }
+            }
+        }
     }
 }
+
 
 
 function countRound(){
