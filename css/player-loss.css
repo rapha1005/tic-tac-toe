@@ -26,7 +26,7 @@
     height: 100%;
     width: 100%;
     background-color: rgba(255, 255, 255, .4);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     font-family: var(--font-family);
@@ -62,9 +62,7 @@
     margin-bottom: 24px;
 }
 
-.game-screen-end-game-modal__title path {
-    fill: var(--golden-tainoi);
-}
+
 
 .game-screen-end-game-modal-buttons {
     display: flex;
