@@ -72,8 +72,6 @@ $gameCells.forEach(function($gameCell){
                 }
             }
        }else(alert("non non non, c'est pas vide : )"))
-
-        
     })
 })
 
