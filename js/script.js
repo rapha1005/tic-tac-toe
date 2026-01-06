@@ -129,5 +129,5 @@ document.querySelector('.game-screen-end-game-modal-buttons__button--secondary')
 })
 
 document.querySelector('.game-screen-end-game-modal-buttons__button').addEventListener('click', () =>{
-    window.location.href = "https://miro.medium.com/v2/resize:fit:436/1*HIH--Y1BpKGjJ6pjHMUm4w.jpeg"
+    window.location.reload();
 })
